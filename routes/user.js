@@ -3,7 +3,7 @@ const User = require("../models/user.model");
 const asyncHandler = require("express-async-handler");
 const { check, validationResult } = require("express-validator");
 
-//const userServices = require("../services/userServices");
+const userServices = require("../services/userServices");
 const passport = require("passport");
 
 router.get(
@@ -19,8 +19,8 @@ router.get(
   })
 );
 
-router.post(
-  "/createUser",
+router.put(
+  "/signup",
   [check("email").isEmail(), check("password").isLength({ min: 6 })],
   asyncHandler(async (req, res, next) => {
     const errors = await validationResult(req);
@@ -34,11 +34,11 @@ router.post(
       password: body.password,
       username: body.email.split("@")[0],
     };
-    res.json(await userServices.SignUp(userData));
+    res.json(await userServices.signUp(userData));
   })
 );
 
-router.post(
+router.put(
   "/login",
   [check("email").isEmail(), check("password").isString()],
   asyncHandler(async (req, res, next) => {
@@ -53,22 +53,13 @@ router.post(
       password: body.password,
     };
 
-    let token = await userServices.LogIn(userData);
-    res.cookie("access-token", token, {
-      maxAge: 60 * 60 * 24 * 30 * 1000, //30 days
-      secure: false,
-      httpOnly: true,
-    });
+    let token = await userServices.logIn(userData);
+
     return res.status(200).json(token);
   })
 );
-
-router.post(
-  "/Token",
-  passport.authenticate("jwt", { session: false }),
-  asyncHandler(async (req, res, next) => {
-    return res.status(200).json(req.user);
-  })
-);
+//delete user
+//whenever you get to it remember to loop over the urlCheck list
+// and delete all the urlCheck by id
 
 module.exports = router;

@@ -22,6 +22,16 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    active: {
+      type: Boolean,
+      default: false,
+    },
+    urlCheck: [
+      {
+        ref: "urlCheck",
+        type: mongoose.Types.ObjectId,
+      },
+    ],
   },
   {
     timestamps: true,
