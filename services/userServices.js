@@ -6,6 +6,9 @@ const util = require("../utilities/utilities");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
+  async getUrlCheck(userID) {
+    return (await User.findById(userID)).urlCheck;
+  },
   async signUp(body) {
     try {
       body.password = util.genPassword(body.password); // hash the password
@@ -29,6 +32,7 @@ module.exports = {
       throw createError(400, error.message);
     }
   },
+
   async addUrlCheck(userID, urlCheckId) {
     try {
       user = await User.findByIdAndUpdate(userID, {
@@ -39,6 +43,7 @@ module.exports = {
       throw createError(400, error.message);
     }
   },
+
   async deleteUrlCheck(userID, urlCheckID) {
     try {
       let user = await User.findByIdAndUpdate(

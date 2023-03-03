@@ -40,13 +40,13 @@ passport.use(
   new JwtStrategy(opts, (jwt_payload, done) => {
     User.findOne({ _id: jwt_payload.id })
       .then((user) => {
-        console.log(user);
         return done(null, user);
       })
       .catch((err) => {
         return done(err, false);
       });
 
+    //mongodb deprcated callback functions so this doesnt work anymore
     // User.findOne({ _id: jwt_payload.id }, (err, user) => {
     //   if (err) {
     //     return done(err, false);

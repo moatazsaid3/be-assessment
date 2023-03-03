@@ -45,6 +45,11 @@ const urlCheckSchema = new Schema(
       ref: "User",
       type: mongoose.Types.ObjectId,
     },
+    report: {
+      ref: "report",
+      type: mongoose.Types.ObjectId,
+    },
+    tag: [{ type: String, trim: true }],
   },
   {
     timestamps: true,
